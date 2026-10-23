@@ -39,3 +39,31 @@ Docs: https://docs.expo.dev/eas/index.md
 - If `ios/` and `android/` directories do not exist, they are generated (Continuous Native Generation). Never create or edit them by hand — configure native behavior in `app.json` and config plugins.
 - Expo Go only includes its bundled native modules. After adding a library with native code, the app needs a development build: `npx expo run:ios|android` locally, or `eas build --profile development`.
 - Prefer recommended Expo modules over third-party libraries, and check your available skills before adding dependencies. Docs: https://docs.expo.dev/versions/latest/index.md
+
+## Copy & translations
+
+The app supports Spanish and English via `i18next`/`react-i18next`, with the
+user's choice in `Ajustes` (`Settings.idioma`, backed by `expo-localization`
+for the first-run guess). Never hardcode user-facing text directly in a
+component.
+
+- Add every new string to **both** `src/i18n/locales/es.json` and
+  `src/i18n/locales/en.json` under the same key, then read it with
+  `useTranslation()`'s `t()` in components or the `i18n` singleton
+  (`src/i18n/index.ts`) in plain utils/data files that can't use hooks (see
+  `utils/dates.ts`, `utils/format.ts`, `utils/nutrition.ts` for the pattern).
+- Reuse existing keys before adding new ones — macro names, units, and common
+  actions (`common.*`, `macro.*`, `units.*`) are shared across many screens.
+- Numbers, dates, and decimal/thousands separators must stay locale-aware:
+  use `formatNumber`/`formatDecimal` from `utils/format.ts` and
+  `formatDayLabel` from `utils/dates.ts` rather than formatting inline.
+- Anything stored in `AsyncStorage` must use a stable, language-independent
+  key, not a translated display string — e.g. `Meal.tipo` stores
+  `'breakfast' | 'lunch' | 'afternoonSnack' | 'dinner' | 'snack'` and is only
+  translated at render time via `t(\`mealTypes.${tipo}\`)`. If you add a new
+  enum-like field that gets persisted, follow the same pattern (stable key in
+  storage, translated label in the UI) instead of saving the display text.
+- Base food names (`src/data/foods.ts`) have an English counterpart in the
+  `FOOD_NAME_EN` lookup, shown via `foodDisplayName()`. User-created
+  ("propio") foods are never translated — they stay exactly as typed. When
+  adding a new base food, add its English name to `FOOD_NAME_EN` too.
