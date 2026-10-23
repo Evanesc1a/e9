@@ -11,6 +11,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import { X } from 'lucide-react-native';
+import { useTranslation } from 'react-i18next';
 import { FormField } from '../components/FormField';
 import { useSettings } from '../context/settings';
 import { colors, fonts, radii } from '../theme/tokens';
@@ -18,6 +19,7 @@ import { colors, fonts, radii } from '../theme/tokens';
 const num = (v: string) => Number(v.replace(',', '.')) || 0;
 
 export default function Objetivos() {
+  const { t } = useTranslation();
   const { settings, update } = useSettings();
 
   const [nombre, setNombre] = useState(settings.nombre);
@@ -58,41 +60,38 @@ export default function Objetivos() {
           automaticallyAdjustKeyboardInsets
         >
           <View style={styles.header}>
-            <Text style={styles.title}>Mis objetivos</Text>
+            <Text style={styles.title}>{t('objetivos.title')}</Text>
             <Pressable onPress={() => router.back()} hitSlop={10}>
               <X size={22} color={colors.textMuted} />
             </Pressable>
           </View>
 
-          <Text style={styles.note}>
-            Escribe los números que tú elijas, o los que te haya indicado un profesional de la
-            salud. La app solo los guarda y calcula tu avance con ellos.
-          </Text>
+          <Text style={styles.note}>{t('objetivos.note')}</Text>
 
-          <FormField label="Tu nombre" value={nombre} onChangeText={setNombre} placeholder="Cómo quieres que te llame" />
+          <FormField label={t('objetivos.nameLabel')} value={nombre} onChangeText={setNombre} placeholder={t('objetivos.namePlaceholder')} />
 
-          <FormField label="Calorías al día" value={kcal} onChangeText={setKcal} suffix="kcal" numeric />
+          <FormField label={t('objetivos.caloriesLabel')} value={kcal} onChangeText={setKcal} suffix="kcal" numeric />
 
           <View style={styles.row}>
             <View style={{ flex: 1 }}>
-              <FormField label="Proteínas" value={prot} onChangeText={setProt} suffix="g" numeric />
+              <FormField label={t('macro.protein')} value={prot} onChangeText={setProt} suffix="g" numeric />
             </View>
             <View style={{ flex: 1 }}>
-              <FormField label="Carbos" value={carb} onChangeText={setCarb} suffix="g" numeric />
+              <FormField label={t('macro.carbsShort')} value={carb} onChangeText={setCarb} suffix="g" numeric />
             </View>
             <View style={{ flex: 1 }}>
-              <FormField label="Grasas" value={gras} onChangeText={setGras} suffix="g" numeric />
+              <FormField label={t('macro.fat')} value={gras} onChangeText={setGras} suffix="g" numeric />
             </View>
           </View>
 
-          <FormField label="Agua al día" value={agua} onChangeText={setAgua} suffix="ml" numeric />
+          <FormField label={t('objetivos.waterLabel')} value={agua} onChangeText={setAgua} suffix="ml" numeric />
 
           <Pressable
             onPress={guardar}
             disabled={!valido}
             style={[styles.save, !valido && { opacity: 0.4 }]}
           >
-            <Text style={styles.saveLabel}>Guardar objetivos</Text>
+            <Text style={styles.saveLabel}>{t('objetivos.save')}</Text>
           </Pressable>
         </ScrollView>
       </KeyboardAvoidingView>

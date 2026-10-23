@@ -1,0 +1,236 @@
+{
+  "common": {
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "save": "Guardar",
+    "optional": "Opcional"
+  },
+  "tabs": {
+    "diary": "Diario",
+    "progress": "Progreso",
+    "favorites": "Favoritos",
+    "settings": "Ajustes"
+  },
+  "mealTypes": {
+    "breakfast": "Desayuno",
+    "lunch": "Comida",
+    "afternoonSnack": "Merienda",
+    "dinner": "Cena",
+    "snack": "Snack"
+  },
+  "macro": {
+    "calories": "Calorías",
+    "protein": "Proteínas",
+    "carbsFull": "Carbohidratos",
+    "carbsShort": "Carbos",
+    "fat": "Grasas",
+    "water": "Agua"
+  },
+  "macroAbbrev": {
+    "protein": "P",
+    "carbs": "C",
+    "fat": "G"
+  },
+  "units": {
+    "unidad": "unidad",
+    "taza": "taza",
+    "media taza": "media taza",
+    "cucharada": "cucharada",
+    "rebanada": "rebanada",
+    "porción": "porción"
+  },
+  "dates": {
+    "today": "Hoy",
+    "days": ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"],
+    "months": [
+      "enero", "febrero", "marzo", "abril", "mayo", "junio",
+      "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"
+    ]
+  },
+  "diario": {
+    "title": "Tu pequeño ritual.",
+    "subtitle": "Un espacio para cuidarte, a tu ritmo."
+  },
+  "caloriesCard": {
+    "title": "La energía de tu día",
+    "remainingUnit": "kcal por registrar",
+    "goalUnit": "kcal de meta",
+    "footerLabel": "Tus objetivos del día"
+  },
+  "calorieRing": {
+    "consumedUnit": "kcal consumidas"
+  },
+  "macrosSection": {
+    "title": "Tus macros",
+    "detail": "CONSUMIDO / OBJETIVO"
+  },
+  "macroCard": {
+    "ofGoal": "de {{goal}} g"
+  },
+  "water": {
+    "title": "Agua",
+    "glass_one": "{{count}} vaso de {{ml}} ml",
+    "glass_other": "{{count}} vasos de {{ml}} ml"
+  },
+  "meals": {
+    "title": "En tu diario",
+    "count_one": "{{count}} comida registrada",
+    "count_other": "{{count}} comidas registradas",
+    "empty": "Todavía no registras nada hoy.",
+    "add": "Añadir comida",
+    "closing": "La noche caerá pronto."
+  },
+  "ajustes": {
+    "title": "Ajustes",
+    "goalsLabel": "Mis objetivos",
+    "welcomeLabel": "Ver la bienvenida otra vez",
+    "welcomeDetail": "Repite los pasos de inicio",
+    "languageLabel": "Idioma",
+    "languageDetail": "Español o English",
+    "languageSpanish": "Español",
+    "languageEnglish": "English"
+  },
+  "objetivos": {
+    "title": "Mis objetivos",
+    "note": "Escribe los números que tú elijas, o los que te haya indicado un profesional de la salud. La app solo los guarda y calcula tu avance con ellos.",
+    "nameLabel": "Tu nombre",
+    "namePlaceholder": "Cómo quieres que te llame",
+    "caloriesLabel": "Calorías al día",
+    "waterLabel": "Agua al día",
+    "save": "Guardar objetivos"
+  },
+  "favoritos": {
+    "title": "Favoritos",
+    "subtitleEmpty": "Tus alimentos de siempre, a un toque.",
+    "subtitleCount_one": "{{count}} alimento guardado",
+    "subtitleCount_other": "{{count}} alimentos guardados",
+    "emptyTitle": "Aún no tienes favoritos",
+    "emptyBody": "Toca la estrella de un alimento cuando añadas un ingrediente a una comida y aparecerá aquí."
+  },
+  "progreso": {
+    "title": "Progreso"
+  },
+  "placeholder": {
+    "comingSoon": "Próximamente."
+  },
+  "onboarding": {
+    "stages": ["Bienvenida", "Tu nombre", "Tus metas personales", "Tu meta de agua", "Todo listo"],
+    "buttons": ["Empezar", "Continuar", "Continuar", "Continuar", "Ir al Diario"],
+    "footers": [
+      "Unos pequeños pasos para hacerlo tuyo.",
+      "Podrás cambiar tu nombre cuando quieras.",
+      "Tus metas pueden cambiar contigo.",
+      "Un pequeño gesto, a tu propio ritmo.",
+      "Cuidarte también es escucharte."
+    ],
+    "progressCount": "{{step}} de {{total}}",
+    "spaceLabel": "TU ESPACIO PERSONAL",
+    "back": "Volver",
+    "step0": {
+      "eyebrow": "TU PEQUEÑO RITUAL",
+      "title": "Bienvenida a e9.",
+      "body": "Tu diario de calorías, macros y agua. Un espacio para cuidarte, a tu ritmo.",
+      "invite": "Tus metas. Tu manera."
+    },
+    "step1": {
+      "eyebrow": "UN ESPACIO MUY TUYO",
+      "title": "¿Cómo te llamas?",
+      "body": "Dinos cómo te gusta que te llamemos. Tu nombre dará vida al saludo de tu Diario.",
+      "nameLabel": "Tu nombre",
+      "namePlaceholder": "Cómo quieres que te llamemos",
+      "nameHint": "Usaremos tu inicial para el avatar.",
+      "previewLabel": "ASÍ TE VERÁS EN TU DIARIO",
+      "hello": "Hola, {{name}}.",
+      "helloFallback": "tú",
+      "helloSub": "Este es tu pequeño ritual.",
+      "quote": "Un espacio para cuidarte, a tu ritmo."
+    },
+    "step2": {
+      "eyebrow": "TÚ MARCAS EL RITMO",
+      "title": "Tus metas, a tu medida.",
+      "body": "Introduce tus objetivos diarios de calorías y macros. Tú decides cada cantidad.",
+      "note": "Son tus objetivos personales, no recomendaciones de e9. Puedes editarlos después en tu Diario."
+    },
+    "step3": {
+      "eyebrow": "UN MOMENTO PARA TI",
+      "title": "Cada gota cuenta.",
+      "body": "Elige cuánta agua quieres registrar al día. Esta meta también la defines tú.",
+      "waterTitle": "Tu agua de cada día",
+      "waterLabel": "Meta diaria de agua",
+      "waterUnit": "L / día",
+      "waterEquiv_one": "Equivale a {{count}} vaso de 250 ml.",
+      "waterEquiv_other": "Equivale a {{count}} vasos de 250 ml.",
+      "personalTitle": "Escucha tu propio ritmo.",
+      "personalBody": "Es una meta elegida por ti, no una recomendación. Podrás ajustarla más adelante."
+    },
+    "step4": {
+      "eyebrow": "EL COMIENZO DE TU RITUAL",
+      "titleNamed": "Todo listo, {{name}}.",
+      "titlePlain": "Todo listo.",
+      "body": "Tu espacio ya tiene tu nombre y tus metas. Ahora puedes empezar tu Diario.",
+      "summaryNameFallback": "Tu espacio",
+      "summarySub": "Tu pequeño ritual, a tu manera.",
+      "summaryTitle": "TUS METAS DIARIAS",
+      "summaryNote": "Estas son las metas que has elegido. Puedes cambiarlas en tu Diario cuando lo necesites."
+    }
+  },
+  "comidaForm": {
+    "titleEdit": "Editar comida",
+    "titleNew": "Nueva comida",
+    "momentLabel": "Momento",
+    "hourLabel": "Hora",
+    "ingredientsLabel": "Ingredientes",
+    "addIngredient": "Añadir ingrediente",
+    "nameLabelOptional": "Nombre (opcional)",
+    "nameLabelWhat": "¿Qué comiste?",
+    "namePlaceholderAuto": "Si lo dejas vacío, se arma con tus ingredientes",
+    "namePlaceholderExample": "Avena, yogur y frutos rojos",
+    "caloriesLabel": "Calorías (kcal)",
+    "caloriesPlaceholder": "Opcional: se calculan con los macros",
+    "saveNew": "Guardar comida",
+    "saveEdit": "Guardar cambios",
+    "delete": "Eliminar comida",
+    "deleteConfirmTitle": "Eliminar comida",
+    "deleteConfirmBody": "¿Eliminar esta comida de tu diario?"
+  },
+  "createFoodForm": {
+    "titleEdit": "Editar alimento",
+    "titleNew": "Nuevo alimento",
+    "backVolver": "Volver",
+    "backBuscar": "Buscar",
+    "nameLabel": "Nombre",
+    "namePlaceholder": "Yogur griego",
+    "brandLabel": "Marca (opcional)",
+    "brandPlaceholder": "Ej. la marca del empaque",
+    "measuredInLabel": "Se mide en",
+    "gramsOption": "Gramos (g)",
+    "mlOption": "Mililitros (ml)",
+    "valuesPerLabel": "Los valores son por",
+    "servingOption": "Porción",
+    "servingSizeLabel": "Tamaño de la porción ({{unit}})",
+    "servingSizePlaceholder": "Ej. 125",
+    "caloriesLabel": "Calorías (kcal)",
+    "previewTitle": "Se guardará por 100 {{unit}}",
+    "saveNew": "Guardar alimento",
+    "saveEdit": "Guardar cambios"
+  },
+  "ingredientPicker": {
+    "title": "Añadir ingrediente",
+    "searchPlaceholder": "Busca un alimento (ej. huevo)",
+    "createNew": "Crear alimento nuevo",
+    "empty": "No encontré ese alimento. Puedes crearlo con el botón de arriba.",
+    "sectionFavorites": "FAVORITOS",
+    "sectionRecents": "RECIENTES",
+    "sectionAll": "TODOS LOS ALIMENTOS",
+    "ownTag": "Propio",
+    "perHundred": "{{kcal}} kcal por 100 {{unit}}",
+    "backSearch": "Buscar",
+    "perHundredDetail": "Por 100 {{unit}}: {{kcal}} kcal",
+    "amountLabel": "Cantidad",
+    "approx": "≈ {{amount}} {{unit}}",
+    "addToMeal": "Añadir a la comida",
+    "deleteConfirmTitle": "Eliminar alimento",
+    "deleteConfirmBody": "¿Eliminar \"{{name}}\"? Las comidas que ya registraste no cambian."
+  }
+}

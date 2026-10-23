@@ -13,14 +13,15 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router, useLocalSearchParams } from 'expo-router';
 import { Plus, Trash2, X } from 'lucide-react-native';
+import { useTranslation } from 'react-i18next';
 import { colors, fonts, radii } from '../../theme/tokens';
 import { loadDay, saveDay } from '../../storage/diary';
 import { toDateKey, currentTime, fromDateKey, formatDayLabel } from '../../utils/dates';
 import { IngredientPicker } from '../../components/IngredientPicker';
-import { round1 } from '../../utils/nutrition';
-import type { Ingredient, Meal } from '../../types';
+import { macroSummary, round1 } from '../../utils/nutrition';
+import type { Ingredient, Meal, MealType } from '../../types';
 
-const TIPOS = ['Desayuno', 'Comida', 'Merienda', 'Cena', 'Snack'];
+const TIPOS: MealType[] = ['breakfast', 'lunch', 'afternoonSnack', 'dinner', 'snack'];
 
 const num = (v: string) => Number(v.replace(',', '.')) || 0;
 
@@ -49,6 +50,7 @@ function Field({ label, value, onChangeText, placeholder, numeric }: FieldProps)
 }
 
 export default function NuevaComida() {
+  const { t } = useTranslation();
   const { fecha: fechaParam, id: idParam } = useLocalSearchParams<{
     fecha?: string;
     id?: string;
@@ -57,7 +59,7 @@ export default function NuevaComida() {
   const editando = Boolean(idParam);
 
   const [original, setOriginal] = useState<Meal | null>(null);
-  const [tipo, setTipo] = useState('Desayuno');
+  const [tipo, setTipo] = useState<MealType>('breakfast');
   const [hora, setHora] = useState(currentTime());
   const [alimentos, setAlimentos] = useState('');
   const [proteinas, setProteinas] = useState('');
@@ -152,10 +154,10 @@ export default function NuevaComida() {
 
   const eliminar = () => {
     if (!original) return;
-    Alert.alert('Eliminar comida', '¿Eliminar esta comida de tu diario?', [
-      { text: 'Cancelar', style: 'cancel' },
+    Alert.alert(t('comidaForm.deleteConfirmTitle'), t('comidaForm.deleteConfirmBody'), [
+      { text: t('common.cancel'), style: 'cancel' },
       {
-        text: 'Eliminar',
+        text: t('common.delete'),
         style: 'destructive',
         onPress: async () => {
           const day = await loadDay(fecha);
@@ -181,7 +183,7 @@ export default function NuevaComida() {
         >
           <View style={styles.header}>
             <View>
-              <Text style={styles.title}>{editando ? 'Editar comida' : 'Nueva comida'}</Text>
+              <Text style={styles.title}>{editando ? t('comidaForm.titleEdit') : t('comidaForm.titleNew')}</Text>
               <Text style={styles.dayLabel}>
                 {formatDayLabel(fechaParam ? fromDateKey(fechaParam) : new Date())}
               </Text>
@@ -192,27 +194,27 @@ export default function NuevaComida() {
           </View>
 
           <View style={styles.field}>
-            <Text style={styles.label}>Momento</Text>
+            <Text style={styles.label}>{t('comidaForm.momentLabel')}</Text>
             <View style={styles.chips}>
-              {TIPOS.map((t) => (
+              {TIPOS.map((tipoOpcion) => (
                 <Pressable
-                  key={t}
-                  onPress={() => setTipo(t)}
-                  style={[styles.chip, tipo === t && styles.chipActive]}
+                  key={tipoOpcion}
+                  onPress={() => setTipo(tipoOpcion)}
+                  style={[styles.chip, tipo === tipoOpcion && styles.chipActive]}
                 >
-                  <Text style={[styles.chipText, tipo === t && styles.chipTextActive]}>
-                    {t}
+                  <Text style={[styles.chipText, tipo === tipoOpcion && styles.chipTextActive]}>
+                    {t(`mealTypes.${tipoOpcion}`)}
                   </Text>
                 </Pressable>
               ))}
             </View>
           </View>
 
-          <Field label="Hora" value={hora} onChangeText={setHora} placeholder="08:30" />
+          <Field label={t('comidaForm.hourLabel')} value={hora} onChangeText={setHora} placeholder="08:30" />
 
           {/* Ingredientes */}
           <View style={styles.field}>
-            <Text style={styles.label}>Ingredientes</Text>
+            <Text style={styles.label}>{t('comidaForm.ingredientsLabel')}</Text>
 
             {ingredientes.map((ing, index) => (
               <View key={`${ing.foodId}-${index}`} style={styles.ingRow}>
@@ -230,18 +232,18 @@ export default function NuevaComida() {
 
             <Pressable onPress={() => setPickerAbierto(true)} style={styles.addIng}>
               <Plus size={16} color={colors.rose} />
-              <Text style={styles.addIngLabel}>Añadir ingrediente</Text>
+              <Text style={styles.addIngLabel}>{t('comidaForm.addIngredient')}</Text>
             </Pressable>
           </View>
 
           <Field
-            label={usaIngredientes ? 'Nombre (opcional)' : '¿Qué comiste?'}
+            label={usaIngredientes ? t('comidaForm.nameLabelOptional') : t('comidaForm.nameLabelWhat')}
             value={alimentos}
             onChangeText={setAlimentos}
             placeholder={
               usaIngredientes
-                ? 'Si lo dejas vacío, se arma con tus ingredientes'
-                : 'Avena, yogur y frutos rojos'
+                ? t('comidaForm.namePlaceholderAuto')
+                : t('comidaForm.namePlaceholderExample')
             }
           />
 
@@ -249,28 +251,28 @@ export default function NuevaComida() {
             <View style={styles.summary}>
               <Text style={styles.summaryKcal}>{Math.round(totales.kcal)} kcal</Text>
               <Text style={styles.summaryMacros}>
-                P {round1(totales.p)} g · C {round1(totales.c)} g · G {round1(totales.g)} g
+                {macroSummary(t, round1(totales.p), round1(totales.c), round1(totales.g))}
               </Text>
             </View>
           ) : (
             <>
               <View style={styles.row}>
                 <View style={{ flex: 1 }}>
-                  <Field label="Proteínas (g)" value={proteinas} onChangeText={setProteinas} placeholder="0" numeric />
+                  <Field label={`${t('macro.protein')} (g)`} value={proteinas} onChangeText={setProteinas} placeholder="0" numeric />
                 </View>
                 <View style={{ flex: 1 }}>
-                  <Field label="Carbos (g)" value={carbohidratos} onChangeText={setCarbohidratos} placeholder="0" numeric />
+                  <Field label={`${t('macro.carbsShort')} (g)`} value={carbohidratos} onChangeText={setCarbohidratos} placeholder="0" numeric />
                 </View>
                 <View style={{ flex: 1 }}>
-                  <Field label="Grasas (g)" value={grasas} onChangeText={setGrasas} placeholder="0" numeric />
+                  <Field label={`${t('macro.fat')} (g)`} value={grasas} onChangeText={setGrasas} placeholder="0" numeric />
                 </View>
               </View>
 
               <Field
-                label="Calorías (kcal)"
+                label={t('comidaForm.caloriesLabel')}
                 value={kcal}
                 onChangeText={setKcal}
-                placeholder="Opcional: se calculan con los macros"
+                placeholder={t('comidaForm.caloriesPlaceholder')}
                 numeric
               />
             </>
@@ -282,14 +284,14 @@ export default function NuevaComida() {
             style={[styles.save, !puedeGuardar && { opacity: 0.4 }]}
           >
             <Text style={styles.saveLabel}>
-              {editando ? 'Guardar cambios' : 'Guardar comida'}
+              {editando ? t('comidaForm.saveEdit') : t('comidaForm.saveNew')}
             </Text>
           </Pressable>
 
           {editando && (
             <Pressable onPress={eliminar} disabled={!original} style={styles.delete}>
               <Trash2 size={16} color={colors.textMuted} />
-              <Text style={styles.deleteLabel}>Eliminar comida</Text>
+              <Text style={styles.deleteLabel}>{t('comidaForm.delete')}</Text>
             </Pressable>
           )}
         </ScrollView>

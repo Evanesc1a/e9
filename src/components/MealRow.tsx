@@ -1,7 +1,9 @@
 import { View, Text, Pressable, StyleSheet } from 'react-native';
 import { Image } from 'expo-image';
 import { ChevronRight, Utensils } from 'lucide-react-native';
+import { useTranslation } from 'react-i18next';
 import { colors, fonts, radii } from '../theme/tokens';
+import { macroSummary } from '../utils/nutrition';
 import type { Meal } from '../types';
 
 type Props = {
@@ -10,6 +12,9 @@ type Props = {
 };
 
 export function MealRow({ meal, onPress }: Props) {
+  const { t } = useTranslation();
+  const tipoLabel = t(`mealTypes.${meal.tipo}`);
+
   return (
     <Pressable onPress={onPress} style={styles.row}>
       {meal.fotoUri ? (
@@ -22,13 +27,13 @@ export function MealRow({ meal, onPress }: Props) {
 
       <View style={styles.detail}>
         <Text style={styles.name} numberOfLines={2}>
-          {meal.alimentos || meal.tipo}
+          {meal.alimentos || tipoLabel}
         </Text>
         <Text style={styles.moment}>
-          {meal.tipo} · {meal.hora}
+          {tipoLabel} · {meal.hora}
         </Text>
         <Text style={styles.macros}>
-          P {meal.proteinas} g · C {meal.carbohidratos} g · G {meal.grasas} g
+          {macroSummary(t, meal.proteinas, meal.carbohidratos, meal.grasas)}
         </Text>
       </View>
 

@@ -1,5 +1,6 @@
 import { View, Text, StyleSheet } from 'react-native';
 import Svg, { Circle } from 'react-native-svg';
+import { useTranslation } from 'react-i18next';
 import { colors, fonts } from '../theme/tokens';
 import { formatNumber } from '../utils/format';
 
@@ -11,6 +12,7 @@ type Props = {
 };
 
 export function CalorieRing({ consumed, goal, size = 148, strokeWidth = 10 }: Props) {
+  const { t } = useTranslation();
   const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
   const progress = goal > 0 ? Math.min(consumed / goal, 1) : 0;
@@ -41,7 +43,7 @@ export function CalorieRing({ consumed, goal, size = 148, strokeWidth = 10 }: Pr
 
       <View style={styles.center}>
         <Text style={styles.value}>{formatNumber(consumed)}</Text>
-        <Text style={styles.unit}>kcal consumidas</Text>
+        <Text style={styles.unit}>{t('calorieRing.consumedUnit')}</Text>
       </View>
     </View>
   );

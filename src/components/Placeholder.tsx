@@ -1,13 +1,15 @@
 import { View, Text, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useTranslation } from 'react-i18next';
 import { colors, fonts } from '../theme/tokens';
 
 export function Placeholder({ title }: { title: string }) {
+  const { t } = useTranslation();
   return (
     <SafeAreaView style={styles.safe} edges={['top']}>
       <View style={styles.center}>
         <Text style={styles.title}>{title}</Text>
-        <Text style={styles.sub}>Próximamente.</Text>
+        <Text style={styles.sub}>{t('placeholder.comingSoon')}</Text>
       </View>
     </SafeAreaView>
   );

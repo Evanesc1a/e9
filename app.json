@@ -8,7 +8,8 @@
     "scheme": "e9",
     "userInterfaceStyle": "automatic",
     "ios": {
-      "icon": "./assets/expo.icon"
+      "icon": "./assets/expo.icon",
+      "bundleIdentifier": "com.goky94.e9"
     },
     "android": {
       "adaptiveIcon": {
@@ -25,7 +26,7 @@
     },
     "plugins": [
       "expo-router",
-            [
+      [
         "expo-splash-screen",
         {
           "image": "./assets/images/emblema-bienvenida.png",
@@ -39,7 +40,8 @@
         }
       ],
       "expo-font",
-      "expo-image"
+      "expo-image",
+      "expo-localization"
     ],
     "experiments": {
       "typedRoutes": true,

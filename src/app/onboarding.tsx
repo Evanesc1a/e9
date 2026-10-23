@@ -13,21 +13,14 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Image } from 'expo-image';
 import { Stack, router } from 'expo-router';
 import { ArrowRight, BookOpen, Check, ChevronLeft, Droplet, Info } from 'lucide-react-native';
+import { useTranslation } from 'react-i18next';
 import { useSettings } from '../context/settings';
+import i18n from '../i18n';
 import { formatNumber } from '../utils/format';
 import { colors, fonts, radii } from '../theme/tokens';
 import { Background } from '../components/Background';
 
 const TOTAL = 5;
-const ETAPAS = ['Bienvenida', 'Tu nombre', 'Tus metas personales', 'Tu meta de agua', 'Todo listo'];
-const BOTONES = ['Empezar', 'Continuar', 'Continuar', 'Continuar', 'Ir al Diario'];
-const PIES = [
-  'Unos pequeños pasos para hacerlo tuyo.',
-  'Podrás cambiar tu nombre cuando quieras.',
-  'Tus metas pueden cambiar contigo.',
-  'Un pequeño gesto, a tu propio ritmo.',
-  'Cuidarte también es escucharte.',
-];
 
 type GoalKey = 'kcal' | 'prot' | 'carb' | 'gras';
 
@@ -35,17 +28,22 @@ const num = (v: string) => Number(v.replace(',', '.')) || 0;
 const soloDigitos = (v: string) => v.replace(/[^0-9]/g, '');
 const soloDecimal = (v: string) => v.replace(/[^0-9.,]/g, '');
 
-// 2000 -> "2,0" · 2250 -> "2,25"
+// 2000 -> "2,0" / "2.0" · 2250 -> "2,25" / "2.25"
 const litros = (ml: number) => {
   const l = ml / 1000;
   const texto = Number.isInteger(l * 10) ? l.toFixed(1) : l.toFixed(2);
-  return texto.replace('.', ',');
+  return i18n.language === 'en' ? texto : texto.replace('.', ',');
 };
 
 export default function Onboarding() {
+  const { t } = useTranslation();
   const { settings, update } = useSettings();
   const yaConfigurado = settings.onboarded;
   const g = settings.goals;
+
+  const ETAPAS = t('onboarding.stages', { returnObjects: true }) as string[];
+  const BOTONES = t('onboarding.buttons', { returnObjects: true }) as string[];
+  const PIES = t('onboarding.footers', { returnObjects: true }) as string[];
 
   const [step, setStep] = useState(0);
   const [nombre, setNombre] = useState(settings.nombre);
@@ -91,10 +89,10 @@ export default function Onboarding() {
   const atras = () => setStep((s) => Math.max(0, s - 1));
 
   const filas: { key: GoalKey; label: string; unit: string; value: string; set: (v: string) => void }[] = [
-    { key: 'kcal', label: 'Calorías', unit: 'kcal', value: kcal, set: setKcal },
-    { key: 'prot', label: 'Proteínas', unit: 'g', value: prot, set: setProt },
-    { key: 'carb', label: 'Carbos', unit: 'g', value: carb, set: setCarb },
-    { key: 'gras', label: 'Grasas', unit: 'g', value: gras, set: setGras },
+    { key: 'kcal', label: t('macro.calories'), unit: 'kcal', value: kcal, set: setKcal },
+    { key: 'prot', label: t('macro.protein'), unit: 'g', value: prot, set: setProt },
+    { key: 'carb', label: t('macro.carbsShort'), unit: 'g', value: carb, set: setCarb },
+    { key: 'gras', label: t('macro.fat'), unit: 'g', value: gras, set: setGras },
   ];
 
   const IconoPrincipal = step === TOTAL - 1 ? BookOpen : ArrowRight;
@@ -121,14 +119,14 @@ export default function Onboarding() {
                 />
                 <Text style={styles.brand}>e9</Text>
               </View>
-              <Text style={styles.space}>TU ESPACIO PERSONAL</Text>
+              <Text style={styles.space}>{t('onboarding.spaceLabel')}</Text>
             </View>
 
             <View style={styles.progress}>
               <View style={styles.progressLabels}>
                 <Text style={styles.stage}>{ETAPAS[step]}</Text>
                 <Text style={styles.count}>
-                  {step + 1} de {TOTAL}
+                  {t('onboarding.progressCount', { step: step + 1, total: TOTAL })}
                 </Text>
               </View>
               <View style={styles.segments}>
@@ -158,16 +156,14 @@ export default function Onboarding() {
                 </View>
 
                 <View style={styles.welcomeText}>
-                  <Text style={styles.eyebrow}>TU PEQUEÑO RITUAL</Text>
-                  <Text style={styles.welcomeTitle}>Bienvenida a e9.</Text>
-                  <Text style={styles.welcomeBody}>
-                    Tu diario de calorías, macros y agua. Un espacio para cuidarte, a tu ritmo.
-                  </Text>
+                  <Text style={styles.eyebrow}>{t('onboarding.step0.eyebrow')}</Text>
+                  <Text style={styles.welcomeTitle}>{t('onboarding.step0.title')}</Text>
+                  <Text style={styles.welcomeBody}>{t('onboarding.step0.body')}</Text>
                 </View>
 
                 <View style={styles.invite}>
                   <Text style={styles.inviteStar}>✧</Text>
-                  <Text style={styles.inviteText}>Tus metas. Tu manera.</Text>
+                  <Text style={styles.inviteText}>{t('onboarding.step0.invite')}</Text>
                 </View>
               </View>
             )}
@@ -175,27 +171,27 @@ export default function Onboarding() {
             {step === 1 && (
               <>
                 <Intro
-                  eyebrow="UN ESPACIO MUY TUYO"
-                  title="¿Cómo te llamas?"
-                  body="Dinos cómo te gusta que te llamemos. Tu nombre dará vida al saludo de tu Diario."
+                  eyebrow={t('onboarding.step1.eyebrow')}
+                  title={t('onboarding.step1.title')}
+                  body={t('onboarding.step1.body')}
                 />
 
                 <View style={styles.entry}>
-                  <Text style={styles.entryLabel}>Tu nombre</Text>
+                  <Text style={styles.entryLabel}>{t('onboarding.step1.nameLabel')}</Text>
                   <TextInput
                     value={nombre}
                     onChangeText={setNombre}
-                    placeholder="Cómo quieres que te llamemos"
+                    placeholder={t('onboarding.step1.namePlaceholder')}
                     placeholderTextColor={colors.textMuted}
                     autoCapitalize="words"
                     selectionColor={colors.rose}
                     style={styles.nameInput}
                   />
-                  <Text style={styles.entryHint}>Usaremos tu inicial para el avatar.</Text>
+                  <Text style={styles.entryHint}>{t('onboarding.step1.nameHint')}</Text>
                 </View>
 
                 <View style={styles.preview}>
-                  <Text style={styles.previewLabel}>ASÍ TE VERÁS EN TU DIARIO</Text>
+                  <Text style={styles.previewLabel}>{t('onboarding.step1.previewLabel')}</Text>
                   <View style={styles.previewCard}>
                     <View style={styles.profile}>
                       <View style={styles.avatar}>
@@ -203,13 +199,15 @@ export default function Onboarding() {
                       </View>
                       <View style={{ flex: 1, gap: 3 }}>
                         <Text style={styles.hello} numberOfLines={1}>
-                          Hola, {nombre.trim() || 'tú'}.
+                          {t('onboarding.step1.hello', {
+                            name: nombre.trim() || t('onboarding.step1.helloFallback'),
+                          })}
                         </Text>
-                        <Text style={styles.helloSub}>Este es tu pequeño ritual.</Text>
+                        <Text style={styles.helloSub}>{t('onboarding.step1.helloSub')}</Text>
                       </View>
                     </View>
                     <View style={styles.divider} />
-                    <Text style={styles.quote}>Un espacio para cuidarte, a tu ritmo.</Text>
+                    <Text style={styles.quote}>{t('onboarding.step1.quote')}</Text>
                   </View>
                 </View>
               </>
@@ -218,9 +216,9 @@ export default function Onboarding() {
             {step === 2 && (
               <>
                 <Intro
-                  eyebrow="TÚ MARCAS EL RITMO"
-                  title="Tus metas, a tu medida."
-                  body="Introduce tus objetivos diarios de calorías y macros. Tú decides cada cantidad."
+                  eyebrow={t('onboarding.step2.eyebrow')}
+                  title={t('onboarding.step2.title')}
+                  body={t('onboarding.step2.body')}
                 />
 
                 <View style={{ gap: 10 }}>
@@ -240,10 +238,7 @@ export default function Onboarding() {
 
                 <View style={styles.note}>
                   <Info size={16} color={colors.rose} />
-                  <Text style={styles.noteText}>
-                    Son tus objetivos personales, no recomendaciones de e9. Puedes editarlos después
-                    en tu Diario.
-                  </Text>
+                  <Text style={styles.noteText}>{t('onboarding.step2.note')}</Text>
                 </View>
               </>
             )}
@@ -251,19 +246,19 @@ export default function Onboarding() {
             {step === 3 && (
               <>
                 <Intro
-                  eyebrow="UN MOMENTO PARA TI"
-                  title="Cada gota cuenta."
-                  body="Elige cuánta agua quieres registrar al día. Esta meta también la defines tú."
+                  eyebrow={t('onboarding.step3.eyebrow')}
+                  title={t('onboarding.step3.title')}
+                  body={t('onboarding.step3.body')}
                 />
 
                 <View style={styles.waterCard}>
                   <View style={styles.waterHeader}>
-                    <Text style={styles.waterTitle}>Tu agua de cada día</Text>
+                    <Text style={styles.waterTitle}>{t('onboarding.step3.waterTitle')}</Text>
                     <Droplet size={26} color={colors.wine} />
                   </View>
 
                   <View style={{ gap: 10 }}>
-                    <Text style={styles.waterLabel}>Meta diaria de agua</Text>
+                    <Text style={styles.waterLabel}>{t('onboarding.step3.waterLabel')}</Text>
                     <View style={styles.waterField}>
                       <TextInput
                         value={aguaL}
@@ -272,7 +267,7 @@ export default function Onboarding() {
                         selectionColor={colors.wine}
                         style={styles.waterInput}
                       />
-                      <Text style={styles.waterUnit}>L / día</Text>
+                      <Text style={styles.waterUnit}>{t('onboarding.step3.waterUnit')}</Text>
                     </View>
                   </View>
 
@@ -283,7 +278,7 @@ export default function Onboarding() {
                       ))}
                     </View>
                     <Text style={styles.waterEquiv}>
-                      Equivale a {vasos} {vasos === 1 ? 'vaso' : 'vasos'} de 250 ml.
+                      {t('onboarding.step3.waterEquiv', { count: vasos })}
                     </Text>
                   </View>
                 </View>
@@ -291,10 +286,8 @@ export default function Onboarding() {
                 <View style={styles.personal}>
                   <Text style={styles.personalStar}>✧</Text>
                   <View style={{ flex: 1, gap: 6 }}>
-                    <Text style={styles.personalTitle}>Escucha tu propio ritmo.</Text>
-                    <Text style={styles.personalBody}>
-                      Es una meta elegida por ti, no una recomendación. Podrás ajustarla más adelante.
-                    </Text>
+                    <Text style={styles.personalTitle}>{t('onboarding.step3.personalTitle')}</Text>
+                    <Text style={styles.personalBody}>{t('onboarding.step3.personalBody')}</Text>
                   </View>
                 </View>
               </>
@@ -303,9 +296,13 @@ export default function Onboarding() {
             {step === 4 && (
               <>
                 <Intro
-                  eyebrow="EL COMIENZO DE TU RITUAL"
-                  title={nombre.trim() ? `Todo listo, ${nombre.trim()}.` : 'Todo listo.'}
-                  body="Tu espacio ya tiene tu nombre y tus metas. Ahora puedes empezar tu Diario."
+                  eyebrow={t('onboarding.step4.eyebrow')}
+                  title={
+                    nombre.trim()
+                      ? t('onboarding.step4.titleNamed', { name: nombre.trim() })
+                      : t('onboarding.step4.titlePlain')
+                  }
+                  body={t('onboarding.step4.body')}
                 />
 
                 <View style={styles.summary}>
@@ -315,29 +312,26 @@ export default function Onboarding() {
                     </View>
                     <View style={{ flex: 1, gap: 3 }}>
                       <Text style={styles.summaryName} numberOfLines={1}>
-                        {nombre.trim() || 'Tu espacio'}
+                        {nombre.trim() || t('onboarding.step4.summaryNameFallback')}
                       </Text>
-                      <Text style={styles.summarySub}>Tu pequeño ritual, a tu manera.</Text>
+                      <Text style={styles.summarySub}>{t('onboarding.step4.summarySub')}</Text>
                     </View>
                     <Check size={20} color={colors.wine} />
                   </View>
 
                   <View style={styles.divider} />
 
-                  <Text style={styles.summaryTitle}>TUS METAS DIARIAS</Text>
+                  <Text style={styles.summaryTitle}>{t('onboarding.step4.summaryTitle')}</Text>
                   <View>
-                    <SummaryRow label="Calorías" value={formatNumber(metas.kcal)} unit="kcal" />
-                    <SummaryRow label="Proteínas" value={String(metas.proteinas)} unit="g" />
-                    <SummaryRow label="Carbos" value={String(metas.carbohidratos)} unit="g" />
-                    <SummaryRow label="Grasas" value={String(metas.grasas)} unit="g" />
-                    <SummaryRow label="Agua" value={litros(metas.aguaMl)} unit="L" />
+                    <SummaryRow label={t('macro.calories')} value={formatNumber(metas.kcal)} unit="kcal" />
+                    <SummaryRow label={t('macro.protein')} value={String(metas.proteinas)} unit="g" />
+                    <SummaryRow label={t('macro.carbsShort')} value={String(metas.carbohidratos)} unit="g" />
+                    <SummaryRow label={t('macro.fat')} value={String(metas.grasas)} unit="g" />
+                    <SummaryRow label={t('macro.water')} value={litros(metas.aguaMl)} unit="L" />
                   </View>
                 </View>
 
-                <Text style={styles.summaryNote}>
-                  Estas son las metas que has elegido. Puedes cambiarlas en tu Diario cuando lo
-                  necesites.
-                </Text>
+                <Text style={styles.summaryNote}>{t('onboarding.step4.summaryNote')}</Text>
               </>
             )}
           </ScrollView>
@@ -348,7 +342,7 @@ export default function Onboarding() {
               {step > 0 && (
                 <Pressable onPress={atras} style={styles.back}>
                   <ChevronLeft size={15} color={colors.textMuted} />
-                  <Text style={styles.backLabel}>Volver</Text>
+                  <Text style={styles.backLabel}>{t('onboarding.back')}</Text>
                 </Pressable>
               )}
 

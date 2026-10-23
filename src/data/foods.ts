@@ -1,5 +1,33 @@
 import type { Food } from '../types';
 
+// Nombres en inglés para los alimentos base, por id. Los alimentos propios
+// (creados por el usuario) no tienen traducción y siempre muestran lo que
+// el usuario escribió.
+export const FOOD_NAME_EN: Record<string, string> = {
+  'mozzarella-latti': 'Mozzarella cheese',
+  'pan-integral-horneaditos': 'Whole wheat bread',
+  'carne-res-magra': 'Beef (lean)',
+  aguacate: 'Avocado',
+  'huevos-enteros': 'Eggs (whole)',
+  'arroz-cocido': 'Rice (cooked)',
+  'yogur-griego-natural': 'Greek yogurt (plain)',
+  'jamon-pavo-white-holland': 'Turkey ham',
+  fresas: 'Strawberries',
+  'guiso-tomate-cebolla': 'Tomato & onion stew',
+  amper: 'Amper (energy drink)',
+  'base-pollo-pechuga': 'Chicken breast, cooked, skinless',
+  'base-banano': 'Banana',
+  'base-avena': 'Rolled oats, raw',
+  'base-leche-entera': 'Whole milk',
+  'base-papa-cocida': 'Potato, cooked',
+  'base-pan-blanco': 'White bread',
+  'base-aceite-oliva': 'Olive oil',
+  'base-lentejas-cocidas': 'Lentils, cooked',
+  'base-atun-agua': 'Canned tuna in water, drained',
+  'base-manzana': 'Apple, with skin',
+  'base-frijol-negro-cocido': 'Black beans, cooked',
+};
+
 // Valores por 100 g (o 100 ml).
 // Los primeros 11 salen de tu tabla; el resto son valores aproximados
 // de referencia, sin verificar contra una etiqueta o tabla oficial.

@@ -1,4 +1,5 @@
 import { View, Text, StyleSheet } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { colors, fonts, radii } from '../theme/tokens';
 
 type Props = {
@@ -9,6 +10,7 @@ type Props = {
 };
 
 export function MacroCard({ name, consumed, goal, color }: Props) {
+  const { t } = useTranslation();
   const pct = goal > 0 ? Math.min(consumed / goal, 1) * 100 : 0;
 
   return (
@@ -24,7 +26,7 @@ export function MacroCard({ name, consumed, goal, color }: Props) {
         <View style={[styles.fill, { width: `${pct}%`, backgroundColor: color }]} />
       </View>
 
-      <Text style={styles.goal}>de {goal} g</Text>
+      <Text style={styles.goal}>{t('macroCard.ofGoal', { goal })}</Text>
     </View>
   );
 }
