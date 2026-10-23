@@ -25,14 +25,21 @@
     },
     "plugins": [
       "expo-router",
-      [
+            [
         "expo-splash-screen",
         {
-          "backgroundColor": "#208AEF",
-          "image": "./assets/images/splash-icon.png",
-          "imageWidth": 76
+          "image": "./assets/images/emblema-bienvenida.png",
+          "imageWidth": 200,
+          "resizeMode": "contain",
+          "backgroundColor": "#1c121d",
+          "dark": {
+            "image": "./assets/images/emblema-bienvenida.png",
+            "backgroundColor": "#1c121d"
+          }
         }
-      ]
+      ],
+      "expo-font",
+      "expo-image"
     ],
     "experiments": {
       "typedRoutes": true,
