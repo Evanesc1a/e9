@@ -1,0 +1,236 @@
+{
+  "common": {
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "save": "Save",
+    "optional": "Optional"
+  },
+  "tabs": {
+    "diary": "Journal",
+    "progress": "Progress",
+    "favorites": "Favorites",
+    "settings": "Settings"
+  },
+  "mealTypes": {
+    "breakfast": "Breakfast",
+    "lunch": "Lunch",
+    "afternoonSnack": "Afternoon snack",
+    "dinner": "Dinner",
+    "snack": "Snack"
+  },
+  "macro": {
+    "calories": "Calories",
+    "protein": "Protein",
+    "carbsFull": "Carbs",
+    "carbsShort": "Carbs",
+    "fat": "Fat",
+    "water": "Water"
+  },
+  "macroAbbrev": {
+    "protein": "P",
+    "carbs": "C",
+    "fat": "F"
+  },
+  "units": {
+    "unidad": "unit",
+    "taza": "cup",
+    "media taza": "half cup",
+    "cucharada": "tbsp",
+    "rebanada": "slice",
+    "porción": "serving"
+  },
+  "dates": {
+    "today": "Today",
+    "days": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+    "months": [
+      "January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December"
+    ]
+  },
+  "diario": {
+    "title": "Your little ritual.",
+    "subtitle": "A space to take care of yourself, at your own pace."
+  },
+  "caloriesCard": {
+    "title": "Today's energy",
+    "remainingUnit": "kcal left to log",
+    "goalUnit": "kcal goal",
+    "footerLabel": "Today's goals"
+  },
+  "calorieRing": {
+    "consumedUnit": "kcal consumed"
+  },
+  "macrosSection": {
+    "title": "Your macros",
+    "detail": "CONSUMED / GOAL"
+  },
+  "macroCard": {
+    "ofGoal": "of {{goal}} g"
+  },
+  "water": {
+    "title": "Water",
+    "glass_one": "{{count}} glass of {{ml}} ml",
+    "glass_other": "{{count}} glasses of {{ml}} ml"
+  },
+  "meals": {
+    "title": "In your journal",
+    "count_one": "{{count}} meal logged",
+    "count_other": "{{count}} meals logged",
+    "empty": "You haven't logged anything today yet.",
+    "add": "Add meal",
+    "closing": "Night will fall soon."
+  },
+  "ajustes": {
+    "title": "Settings",
+    "goalsLabel": "My goals",
+    "welcomeLabel": "See the welcome again",
+    "welcomeDetail": "Replay the intro steps",
+    "languageLabel": "Language",
+    "languageDetail": "Español or English",
+    "languageSpanish": "Español",
+    "languageEnglish": "English"
+  },
+  "objetivos": {
+    "title": "My goals",
+    "note": "Enter whichever numbers you choose, or the ones a health professional gave you. The app only stores them and tracks your progress against them.",
+    "nameLabel": "Your name",
+    "namePlaceholder": "What you'd like to be called",
+    "caloriesLabel": "Calories per day",
+    "waterLabel": "Water per day",
+    "save": "Save goals"
+  },
+  "favoritos": {
+    "title": "Favorites",
+    "subtitleEmpty": "Your go-to foods, one tap away.",
+    "subtitleCount_one": "{{count}} food saved",
+    "subtitleCount_other": "{{count}} foods saved",
+    "emptyTitle": "You don't have any favorites yet",
+    "emptyBody": "Tap the star on a food when you add an ingredient to a meal, and it'll show up here."
+  },
+  "progreso": {
+    "title": "Progress"
+  },
+  "placeholder": {
+    "comingSoon": "Coming soon."
+  },
+  "onboarding": {
+    "stages": ["Welcome", "Your name", "Your personal goals", "Your water goal", "All set"],
+    "buttons": ["Get started", "Continue", "Continue", "Continue", "Go to Journal"],
+    "footers": [
+      "A few small steps to make it yours.",
+      "You can change your name whenever you want.",
+      "Your goals can change with you.",
+      "A small gesture, at your own pace.",
+      "Taking care of yourself also means listening to yourself."
+    ],
+    "progressCount": "{{step}} of {{total}}",
+    "spaceLabel": "YOUR PERSONAL SPACE",
+    "back": "Back",
+    "step0": {
+      "eyebrow": "YOUR LITTLE RITUAL",
+      "title": "Welcome to e9.",
+      "body": "Your calorie, macro and water journal. A space to take care of yourself, at your own pace.",
+      "invite": "Your goals. Your way."
+    },
+    "step1": {
+      "eyebrow": "A SPACE THAT'S ALL YOURS",
+      "title": "What's your name?",
+      "body": "Tell us what you'd like to be called. Your name will bring your Journal's greeting to life.",
+      "nameLabel": "Your name",
+      "namePlaceholder": "What you'd like to be called",
+      "nameHint": "We'll use your initial for the avatar.",
+      "previewLabel": "THIS IS HOW YOU'LL LOOK IN YOUR JOURNAL",
+      "hello": "Hi, {{name}}.",
+      "helloFallback": "you",
+      "helloSub": "This is your little ritual.",
+      "quote": "A space to take care of yourself, at your own pace."
+    },
+    "step2": {
+      "eyebrow": "YOU SET THE PACE",
+      "title": "Your goals, your way.",
+      "body": "Enter your daily calorie and macro goals. You decide every number.",
+      "note": "These are your own personal goals, not recommendations from e9. You can edit them later in your Journal."
+    },
+    "step3": {
+      "eyebrow": "A MOMENT FOR YOURSELF",
+      "title": "Every drop counts.",
+      "body": "Choose how much water you want to log each day. This goal is yours to set too.",
+      "waterTitle": "Your daily water",
+      "waterLabel": "Daily water goal",
+      "waterUnit": "L / day",
+      "waterEquiv_one": "That's {{count}} glass of 250 ml.",
+      "waterEquiv_other": "That's {{count}} glasses of 250 ml.",
+      "personalTitle": "Listen to your own pace.",
+      "personalBody": "It's a goal you chose, not a recommendation. You'll be able to adjust it later."
+    },
+    "step4": {
+      "eyebrow": "THE START OF YOUR RITUAL",
+      "titleNamed": "All set, {{name}}.",
+      "titlePlain": "All set.",
+      "body": "Your space already has your name and your goals. Now you can start your Journal.",
+      "summaryNameFallback": "Your space",
+      "summarySub": "Your little ritual, your way.",
+      "summaryTitle": "YOUR DAILY GOALS",
+      "summaryNote": "These are the goals you chose. You can change them in your Journal whenever you need to."
+    }
+  },
+  "comidaForm": {
+    "titleEdit": "Edit meal",
+    "titleNew": "New meal",
+    "momentLabel": "Time of day",
+    "hourLabel": "Time",
+    "ingredientsLabel": "Ingredients",
+    "addIngredient": "Add ingredient",
+    "nameLabelOptional": "Name (optional)",
+    "nameLabelWhat": "What did you eat?",
+    "namePlaceholderAuto": "If you leave it blank, it's built from your ingredients",
+    "namePlaceholderExample": "Oats, yogurt and berries",
+    "caloriesLabel": "Calories (kcal)",
+    "caloriesPlaceholder": "Optional: calculated from your macros",
+    "saveNew": "Save meal",
+    "saveEdit": "Save changes",
+    "delete": "Delete meal",
+    "deleteConfirmTitle": "Delete meal",
+    "deleteConfirmBody": "Delete this meal from your journal?"
+  },
+  "createFoodForm": {
+    "titleEdit": "Edit food",
+    "titleNew": "New food",
+    "backVolver": "Back",
+    "backBuscar": "Search",
+    "nameLabel": "Name",
+    "namePlaceholder": "Greek yogurt",
+    "brandLabel": "Brand (optional)",
+    "brandPlaceholder": "E.g. the brand on the package",
+    "measuredInLabel": "Measured in",
+    "gramsOption": "Grams (g)",
+    "mlOption": "Milliliters (ml)",
+    "valuesPerLabel": "The values are per",
+    "servingOption": "Serving",
+    "servingSizeLabel": "Serving size ({{unit}})",
+    "servingSizePlaceholder": "E.g. 125",
+    "caloriesLabel": "Calories (kcal)",
+    "previewTitle": "Will be saved per 100 {{unit}}",
+    "saveNew": "Save food",
+    "saveEdit": "Save changes"
+  },
+  "ingredientPicker": {
+    "title": "Add ingredient",
+    "searchPlaceholder": "Search for a food (e.g. egg)",
+    "createNew": "Create new food",
+    "empty": "I couldn't find that food. You can create it with the button above.",
+    "sectionFavorites": "FAVORITES",
+    "sectionRecents": "RECENTS",
+    "sectionAll": "ALL FOODS",
+    "ownTag": "Yours",
+    "perHundred": "{{kcal}} kcal per 100 {{unit}}",
+    "backSearch": "Search",
+    "perHundredDetail": "Per 100 {{unit}}: {{kcal}} kcal",
+    "amountLabel": "Amount",
+    "approx": "≈ {{amount}} {{unit}}",
+    "addToMeal": "Add to meal",
+    "deleteConfirmTitle": "Delete food",
+    "deleteConfirmBody": "Delete \"{{name}}\"? Meals you already logged won't change."
+  }
+}

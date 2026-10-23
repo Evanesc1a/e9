@@ -1,5 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import type { Goals, Settings } from '../types';
+import * as Localization from 'expo-localization';
+import type { Goals, Idioma, Settings } from '../types';
 
 const KEY = 'settings';
 
@@ -16,7 +17,18 @@ export const DEFAULT_SETTINGS: Settings = {
   nombre: '',
   goals: DEFAULT_GOALS,
   onboarded: false,
+  idioma: 'es',
 };
+
+// Primera vez que se abre la app: adivina el idioma a partir del dispositivo.
+// Después de eso, el idioma guardado siempre gana.
+function idiomaDelDispositivo(): Idioma {
+  try {
+    return Localization.getLocales()[0]?.languageCode === 'en' ? 'en' : 'es';
+  } catch {
+    return 'es';
+  }
+}
 
 export async function loadSettings(): Promise<Settings> {
   try {
@@ -32,7 +44,7 @@ export async function loadSettings(): Promise<Settings> {
   } catch (e) {
     console.warn('No se pudieron leer los ajustes', e);
   }
-  return DEFAULT_SETTINGS;
+  return { ...DEFAULT_SETTINGS, idioma: idiomaDelDispositivo() };
 }
 
 export async function saveSettings(settings: Settings): Promise<void> {

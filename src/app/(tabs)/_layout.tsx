@@ -7,6 +7,7 @@ import {
   Settings2,
   type LucideIcon,
 } from 'lucide-react-native';
+import { useTranslation } from 'react-i18next';
 import { useSettings } from '../../context/settings';
 import { colors, fonts } from '../../theme/tokens';
 
@@ -29,6 +30,7 @@ function TabIcon  ({ Icon, focused }: { Icon: LucideIcon; focused: boolean }) {
 
 export default function TabsLayout() {
   const { loaded, settings } = useSettings();
+  const { t } = useTranslation();
 
   // Primera vez: antes de ver el Diario, pasa por el onboarding
   if (!loaded) return null;
@@ -53,14 +55,14 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Diario',
+          title: t('tabs.diary'),
           tabBarIcon: ({ focused }) => <TabIcon Icon={BookOpen} focused={focused} />,
         }}
       />
       <Tabs.Screen
         name="progreso"
         options={{
-          title: 'Progreso',
+          title: t('tabs.progress'),
           tabBarIcon: ({ focused }) => (
             <TabIcon Icon={ChartNoAxesCombined} focused={focused} />
           ),
@@ -69,14 +71,14 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="favoritos"
         options={{
-          title: 'Favoritos',
+          title: t('tabs.favorites'),
           tabBarIcon: ({ focused }) => <TabIcon Icon={Heart} focused={focused} />,
         }}
       />
       <Tabs.Screen
         name="ajustes"
         options={{
-          title: 'Ajustes',
+          title: t('tabs.settings'),
           tabBarIcon: ({ focused }) => <TabIcon Icon={Settings2} focused={focused} />,
         }}
       />

@@ -1,6 +1,8 @@
 import { View, Text, Pressable, StyleSheet } from 'react-native';
 import { Droplet, Plus } from 'lucide-react-native';
+import { useTranslation } from 'react-i18next';
 import { colors, fonts, radii } from '../theme/tokens';
+import { formatDecimal } from '../utils/format';
 
 type Props = {
   ml: number;
@@ -11,9 +13,10 @@ type Props = {
 
 const SEGMENTS = 8;
 
-const toLiters = (ml: number) => (ml / 1000).toString().replace('.', ',');
+const toLiters = (ml: number) => formatDecimal(ml / 1000);
 
 export function WaterTracker({ ml, goalMl, glassMl = 250, onAdd }: Props) {
+  const { t } = useTranslation();
   const filled = Math.min(Math.round((ml / goalMl) * SEGMENTS), SEGMENTS);
   const glasses = Math.round(ml / glassMl);
 
@@ -23,7 +26,7 @@ export function WaterTracker({ ml, goalMl, glassMl = 250, onAdd }: Props) {
 
       <View style={styles.middle}>
         <View style={styles.summary}>
-          <Text style={styles.title}>Agua</Text>
+          <Text style={styles.title}>{t('water.title')}</Text>
           <Text style={styles.amount}>
             {toLiters(ml)} / {toLiters(goalMl)} L
           </Text>
@@ -41,9 +44,7 @@ export function WaterTracker({ ml, goalMl, glassMl = 250, onAdd }: Props) {
           ))}
         </View>
 
-        <Text style={styles.equiv}>
-          {glasses} {glasses === 1 ? 'vaso' : 'vasos'} de {glassMl} ml
-        </Text>
+        <Text style={styles.equiv}>{t('water.glass', { count: glasses, ml: glassMl })}</Text>
       </View>
 
       <Pressable onPress={onAdd} style={styles.add} hitSlop={6}>

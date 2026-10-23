@@ -26,9 +26,13 @@ export type Ingredient = {
   grasas: number;
 };
 
+// Clave estable de las comidas, independiente del idioma de la interfaz
+// ("breakfast", "lunch", "afternoonSnack", "dinner", "snack")
+export type MealType = 'breakfast' | 'lunch' | 'afternoonSnack' | 'dinner' | 'snack';
+
 export type Meal = {
   id: string;
-  tipo: string;
+  tipo: MealType;
   hora: string;
   alimentos: string;
   proteinas: number;
@@ -52,8 +56,11 @@ export type Goals = {
   aguaMl: number;
 };
 
+export type Idioma = 'es' | 'en';
+
 export type Settings = {
   nombre: string;
   goals: Goals;
   onboarded: boolean;
+  idioma: Idioma;
 };

@@ -19,6 +19,7 @@ import {
   Trash2,
   X,
 } from 'lucide-react-native';
+import { useTranslation } from 'react-i18next';
 import { colors, fonts, radii } from '../theme/tokens';
 import {
   deleteCustomFood,
@@ -27,7 +28,14 @@ import {
   updateCustomFood,
 } from '../storage/foods';
 import { loadFavorites, loadRecents, pushRecent, toggleFavorite } from '../storage/favorites';
-import { ingredientFor, searchFoods, round1 } from '../utils/nutrition';
+import {
+  foodDisplayName,
+  ingredientFor,
+  macroSummary,
+  searchFoods,
+  round1,
+  unitLabel,
+} from '../utils/nutrition';
 import { CreateFoodForm } from './CreateFoodForm';
 import type { Food, Ingredient } from '../types';
 
@@ -46,6 +54,7 @@ type Row =
 const num = (v: string) => Number(v.replace(',', '.')) || 0;
 
 export function IngredientPicker({ visible, onClose, onAdd }: Props) {
+  const { t, i18n } = useTranslation();
   const [foods, setFoods] = useState<Food[]>([]);
   const [favs, setFavs] = useState<string[]>([]);
   const [recents, setRecents] = useState<string[]>([]);
@@ -69,7 +78,10 @@ export function IngredientPicker({ visible, onClose, onAdd }: Props) {
     setEditing(null);
   }, [visible]);
 
-  const results = useMemo(() => searchFoods(foods, query), [foods, query]);
+  const results = useMemo(
+    () => searchFoods(foods, query, i18n.language),
+    [foods, query, i18n.language]
+  );
 
   // Sin búsqueda: Favoritos, Recientes y Todos. Con búsqueda: solo los resultados
   const rows = useMemo<Row[]>(() => {
@@ -86,17 +98,17 @@ export function IngredientPicker({ visible, onClose, onAdd }: Props) {
 
     const out: Row[] = [];
     if (favFoods.length > 0) {
-      out.push({ type: 'header', id: 'h-fav', title: 'FAVORITOS' });
+      out.push({ type: 'header', id: 'h-fav', title: t('ingredientPicker.sectionFavorites') });
       favFoods.forEach((food) => out.push({ type: 'food', id: `fav-${food.id}`, food }));
     }
     if (recentFoods.length > 0) {
-      out.push({ type: 'header', id: 'h-rec', title: 'RECIENTES' });
+      out.push({ type: 'header', id: 'h-rec', title: t('ingredientPicker.sectionRecents') });
       recentFoods.forEach((food) => out.push({ type: 'food', id: `rec-${food.id}`, food }));
     }
-    if (out.length > 0) out.push({ type: 'header', id: 'h-all', title: 'TODOS LOS ALIMENTOS' });
+    if (out.length > 0) out.push({ type: 'header', id: 'h-all', title: t('ingredientPicker.sectionAll') });
     results.forEach((food) => out.push({ type: 'food', id: `all-${food.id}`, food }));
     return out;
-  }, [foods, favs, recents, query, results]);
+  }, [foods, favs, recents, query, results, t]);
 
   // Unidad base del alimento: gramos, o mililitros para las bebidas
   const base = selected?.unidad ?? 'g';
@@ -104,7 +116,7 @@ export function IngredientPicker({ visible, onClose, onAdd }: Props) {
   // Porciones del alimento y, siempre, la unidad base
   const units: Unit[] = selected
     ? [
-        ...(selected.porciones ?? []).map((p) => ({ label: p.etiqueta, gramos: p.gramos })),
+        ...(selected.porciones ?? []).map((p) => ({ label: unitLabel(p.etiqueta, t), gramos: p.gramos })),
         { label: base, gramos: 1 },
       ]
     : [];
@@ -160,12 +172,12 @@ export function IngredientPicker({ visible, onClose, onAdd }: Props) {
     if (!selected) return;
     const food = selected;
     Alert.alert(
-      'Eliminar alimento',
-      `¿Eliminar "${food.nombre}"? Las comidas que ya registraste no cambian.`,
+      t('ingredientPicker.deleteConfirmTitle'),
+      t('ingredientPicker.deleteConfirmBody', { name: foodDisplayName(food, i18n.language) }),
       [
-        { text: 'Cancelar', style: 'cancel' },
+        { text: t('common.cancel'), style: 'cancel' },
         {
-          text: 'Eliminar',
+          text: t('common.delete'),
           style: 'destructive',
           onPress: async () => {
             await deleteCustomFood(food.id);
@@ -200,7 +212,7 @@ export function IngredientPicker({ visible, onClose, onAdd }: Props) {
         ) : !selected ? (
           <>
             <View style={styles.header}>
-              <Text style={styles.title}>Añadir ingrediente</Text>
+              <Text style={styles.title}>{t('ingredientPicker.title')}</Text>
               <Pressable onPress={onClose} hitSlop={10}>
                 <X size={22} color={colors.textMuted} />
               </Pressable>
@@ -211,7 +223,7 @@ export function IngredientPicker({ visible, onClose, onAdd }: Props) {
               <TextInput
                 value={query}
                 onChangeText={setQuery}
-                placeholder="Busca un alimento (ej. huevo)"
+                placeholder={t('ingredientPicker.searchPlaceholder')}
                 placeholderTextColor={colors.textMuted}
                 style={styles.searchInput}
                 autoCorrect={false}
@@ -220,7 +232,7 @@ export function IngredientPicker({ visible, onClose, onAdd }: Props) {
 
             <Pressable onPress={() => setCreating(true)} style={styles.createButton}>
               <Plus size={16} color={colors.rose} />
-              <Text style={styles.createLabel}>Crear alimento nuevo</Text>
+              <Text style={styles.createLabel}>{t('ingredientPicker.createNew')}</Text>
             </Pressable>
 
             <FlatList
@@ -228,9 +240,7 @@ export function IngredientPicker({ visible, onClose, onAdd }: Props) {
               keyExtractor={(r) => r.id}
               keyboardShouldPersistTaps="handled"
               ListEmptyComponent={
-                <Text style={styles.empty}>
-                  No encontré ese alimento. Puedes crearlo con el botón de arriba.
-                </Text>
+                <Text style={styles.empty}>{t('ingredientPicker.empty')}</Text>
               }
               renderItem={({ item }) => {
                 if (item.type === 'header') {
@@ -241,11 +251,11 @@ export function IngredientPicker({ visible, onClose, onAdd }: Props) {
                 return (
                   <Pressable onPress={() => choose(food)} style={styles.item}>
                     <View style={{ flex: 1, gap: 3 }}>
-                      <Text style={styles.itemName}>{food.nombre}</Text>
+                      <Text style={styles.itemName}>{foodDisplayName(food, i18n.language)}</Text>
                       <Text style={styles.itemMeta}>
-                        {food.propio ? 'Propio · ' : ''}
+                        {food.propio ? `${t('ingredientPicker.ownTag')} · ` : ''}
                         {food.marca ? `${food.marca} · ` : ''}
-                        {food.kcal100} kcal por 100 {food.unidad ?? 'g'}
+                        {t('ingredientPicker.perHundred', { kcal: food.kcal100, unit: food.unidad ?? 'g' })}
                       </Text>
                     </View>
                     <Pressable onPress={() => toggleFav(food.id)} hitSlop={10}>
@@ -266,7 +276,7 @@ export function IngredientPicker({ visible, onClose, onAdd }: Props) {
             <View style={styles.header}>
               <Pressable onPress={() => setSelected(null)} hitSlop={10} style={styles.back}>
                 <ChevronLeft size={20} color={colors.textMuted} />
-                <Text style={styles.backLabel}>Buscar</Text>
+                <Text style={styles.backLabel}>{t('ingredientPicker.backSearch')}</Text>
               </Pressable>
               <View style={styles.headerRight}>
                 <Pressable onPress={() => toggleFav(selected.id)} hitSlop={10}>
@@ -282,28 +292,28 @@ export function IngredientPicker({ visible, onClose, onAdd }: Props) {
               </View>
             </View>
 
-            <Text style={styles.detailName}>{selected.nombre}</Text>
+            <Text style={styles.detailName}>{foodDisplayName(selected, i18n.language)}</Text>
             {selected.marca ? <Text style={styles.itemMeta}>{selected.marca}</Text> : null}
             <Text style={styles.itemMeta}>
-              Por 100 {base}: {selected.kcal100} kcal · P {selected.proteinas100} g · C{' '}
-              {selected.carbohidratos100} g · G {selected.grasas100} g
+              {t('ingredientPicker.perHundredDetail', { unit: base, kcal: selected.kcal100 })} ·{' '}
+              {macroSummary(t, selected.proteinas100, selected.carbohidratos100, selected.grasas100)}
             </Text>
 
             {selected.propio && (
               <View style={styles.actions}>
                 <Pressable onPress={() => setEditing(selected)} style={styles.action} hitSlop={8}>
                   <Pencil size={14} color={colors.rose} />
-                  <Text style={styles.actionEdit}>Editar</Text>
+                  <Text style={styles.actionEdit}>{t('common.edit')}</Text>
                 </Pressable>
                 <Pressable onPress={confirmarBorrado} style={styles.action} hitSlop={8}>
                   <Trash2 size={14} color={colors.textMuted} />
-                  <Text style={styles.actionDelete}>Eliminar</Text>
+                  <Text style={styles.actionDelete}>{t('common.delete')}</Text>
                 </Pressable>
               </View>
             )}
 
             <View style={styles.field}>
-              <Text style={styles.label}>Cantidad</Text>
+              <Text style={styles.label}>{t('ingredientPicker.amountLabel')}</Text>
               <TextInput
                 value={amount}
                 onChangeText={setAmount}
@@ -328,7 +338,7 @@ export function IngredientPicker({ visible, onClose, onAdd }: Props) {
 
             {unit.label !== base && (
               <Text style={styles.itemMeta}>
-                ≈ {round1(gramos)} {base}
+                {t('ingredientPicker.approx', { amount: round1(gramos), unit: base })}
               </Text>
             )}
 
@@ -336,7 +346,7 @@ export function IngredientPicker({ visible, onClose, onAdd }: Props) {
               <View style={styles.preview}>
                 <Text style={styles.previewKcal}>{preview.kcal} kcal</Text>
                 <Text style={styles.previewMacros}>
-                  P {preview.proteinas} g · C {preview.carbohidratos} g · G {preview.grasas} g
+                  {macroSummary(t, preview.proteinas, preview.carbohidratos, preview.grasas)}
                 </Text>
               </View>
             )}
@@ -346,7 +356,7 @@ export function IngredientPicker({ visible, onClose, onAdd }: Props) {
               disabled={gramos <= 0}
               style={[styles.addButton, gramos <= 0 && { opacity: 0.4 }]}
             >
-              <Text style={styles.addLabel}>Añadir a la comida</Text>
+              <Text style={styles.addLabel}>{t('ingredientPicker.addToMeal')}</Text>
             </Pressable>
           </>
         )}

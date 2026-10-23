@@ -1,5 +1,6 @@
 import { View, Text, Pressable, StyleSheet } from 'react-native';
 import { Plus } from 'lucide-react-native';
+import { useTranslation } from 'react-i18next';
 import { MealRow } from './MealRow';
 import { colors, fonts, radii } from '../theme/tokens';
 import type { Meal } from '../types';
@@ -11,20 +12,19 @@ type Props = {
 };
 
 export function MealsSection({ meals, onAddMeal, onOpenMeal }: Props) {
+  const { t } = useTranslation();
   const count = meals.length;
 
   return (
     <View style={styles.wrap}>
       <View style={styles.header}>
-        <Text style={styles.title}>En tu diario</Text>
-        <Text style={styles.count}>
-          {count} {count === 1 ? 'comida registrada' : 'comidas registradas'}
-        </Text>
+        <Text style={styles.title}>{t('meals.title')}</Text>
+        <Text style={styles.count}>{t('meals.count', { count })}</Text>
       </View>
 
             <View>
         {meals.length === 0 && (
-          <Text style={styles.empty}>Todavía no registras nada hoy.</Text>
+          <Text style={styles.empty}>{t('meals.empty')}</Text>
         )}
         {meals.map((meal) => (
           <MealRow key={meal.id} meal={meal} onPress={() => onOpenMeal?.(meal)} />
@@ -33,11 +33,11 @@ export function MealsSection({ meals, onAddMeal, onOpenMeal }: Props) {
 
       <Pressable onPress={onAddMeal} style={styles.addButton}>
         <Plus size={18} color={colors.cream} />
-        <Text style={styles.addLabel}>Añadir comida</Text>
+        <Text style={styles.addLabel}>{t('meals.add')}</Text>
       </Pressable>
 
             <View style={styles.closing}>
-        <Text style={styles.message}>Night will fall soon</Text>
+        <Text style={styles.message}>{t('meals.closing')}</Text>
       </View>
     </View>
   );

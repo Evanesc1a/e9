@@ -8,8 +8,9 @@ import {
   StyleSheet,
 } from 'react-native';
 import { ChevronLeft } from 'lucide-react-native';
+import { useTranslation } from 'react-i18next';
 import { colors, fonts, radii } from '../theme/tokens';
-import { round1 } from '../utils/nutrition';
+import { macroSummary, round1 } from '../utils/nutrition';
 import type { Food } from '../types';
 
 type Props = {
@@ -46,6 +47,7 @@ function Field({ label, value, onChangeText, placeholder, numeric }: FieldProps)
 }
 
 export function CreateFoodForm({ food, initialName = '', onSave, onCancel }: Props) {
+  const { t } = useTranslation();
   const editing = food !== undefined;
 
   const [nombre, setNombre] = useState(food?.nombre ?? initialName);
@@ -98,7 +100,9 @@ export function CreateFoodForm({ food, initialName = '', onSave, onCancel }: Pro
       <View style={styles.header}>
         <Pressable onPress={onCancel} hitSlop={10} style={styles.back}>
           <ChevronLeft size={20} color={colors.textMuted} />
-          <Text style={styles.backLabel}>{editing ? 'Volver' : 'Buscar'}</Text>
+          <Text style={styles.backLabel}>
+            {editing ? t('createFoodForm.backVolver') : t('createFoodForm.backBuscar')}
+          </Text>
         </Pressable>
       </View>
 
@@ -109,13 +113,13 @@ export function CreateFoodForm({ food, initialName = '', onSave, onCancel }: Pro
         automaticallyAdjustKeyboardInsets
         showsVerticalScrollIndicator={false}
       >
-        <Text style={styles.title}>{editing ? 'Editar alimento' : 'Nuevo alimento'}</Text>
+        <Text style={styles.title}>{editing ? t('createFoodForm.titleEdit') : t('createFoodForm.titleNew')}</Text>
 
-        <Field label="Nombre" value={nombre} onChangeText={setNombre} placeholder="Yogur griego" />
-        <Field label="Marca (opcional)" value={marca} onChangeText={setMarca} placeholder="Ej. la marca del empaque" />
+        <Field label={t('createFoodForm.nameLabel')} value={nombre} onChangeText={setNombre} placeholder={t('createFoodForm.namePlaceholder')} />
+        <Field label={t('createFoodForm.brandLabel')} value={marca} onChangeText={setMarca} placeholder={t('createFoodForm.brandPlaceholder')} />
 
         <View style={styles.field}>
-          <Text style={styles.label}>Se mide en</Text>
+          <Text style={styles.label}>{t('createFoodForm.measuredInLabel')}</Text>
           <View style={styles.chips}>
             {(['g', 'ml'] as const).map((u) => (
               <Pressable
@@ -124,7 +128,7 @@ export function CreateFoodForm({ food, initialName = '', onSave, onCancel }: Pro
                 style={[styles.chip, unidad === u && styles.chipActive]}
               >
                 <Text style={[styles.chipText, unidad === u && styles.chipTextActive]}>
-                  {u === 'g' ? 'Gramos (g)' : 'Mililitros (ml)'}
+                  {u === 'g' ? t('createFoodForm.gramsOption') : t('createFoodForm.mlOption')}
                 </Text>
               </Pressable>
             ))}
@@ -132,7 +136,7 @@ export function CreateFoodForm({ food, initialName = '', onSave, onCancel }: Pro
         </View>
 
         <View style={styles.field}>
-          <Text style={styles.label}>Los valores son por</Text>
+          <Text style={styles.label}>{t('createFoodForm.valuesPerLabel')}</Text>
           <View style={styles.chips}>
             <Pressable
               onPress={() => setModo('100')}
@@ -147,7 +151,7 @@ export function CreateFoodForm({ food, initialName = '', onSave, onCancel }: Pro
               style={[styles.chip, modo === 'porcion' && styles.chipActive]}
             >
               <Text style={[styles.chipText, modo === 'porcion' && styles.chipTextActive]}>
-                Porción
+                {t('createFoodForm.servingOption')}
               </Text>
             </Pressable>
           </View>
@@ -155,35 +159,33 @@ export function CreateFoodForm({ food, initialName = '', onSave, onCancel }: Pro
 
         {modo === 'porcion' && (
           <Field
-            label={`Tamaño de la porción (${unidad})`}
+            label={t('createFoodForm.servingSizeLabel', { unit: unidad })}
             value={tamano}
             onChangeText={setTamano}
-            placeholder="Ej. 125"
+            placeholder={t('createFoodForm.servingSizePlaceholder')}
             numeric
           />
         )}
 
-        <Field label="Calorías (kcal)" value={kcal} onChangeText={setKcal} placeholder="Opcional" numeric />
+        <Field label={t('createFoodForm.caloriesLabel')} value={kcal} onChangeText={setKcal} placeholder={t('common.optional')} numeric />
 
         <View style={styles.row}>
           <View style={{ flex: 1 }}>
-            <Field label="Proteínas (g)" value={prot} onChangeText={setProt} placeholder="0" numeric />
+            <Field label={`${t('macro.protein')} (g)`} value={prot} onChangeText={setProt} placeholder="0" numeric />
           </View>
           <View style={{ flex: 1 }}>
-            <Field label="Carbos (g)" value={carb} onChangeText={setCarb} placeholder="0" numeric />
+            <Field label={`${t('macro.carbsShort')} (g)`} value={carb} onChangeText={setCarb} placeholder="0" numeric />
           </View>
           <View style={{ flex: 1 }}>
-            <Field label="Grasas (g)" value={gras} onChangeText={setGras} placeholder="0" numeric />
+            <Field label={`${t('macro.fat')} (g)`} value={gras} onChangeText={setGras} placeholder="0" numeric />
           </View>
         </View>
 
         {puedeGuardar && (
           <View style={styles.preview}>
-            <Text style={styles.previewTitle}>Se guardará por 100 {unidad}</Text>
+            <Text style={styles.previewTitle}>{t('createFoodForm.previewTitle', { unit: unidad })}</Text>
             <Text style={styles.previewKcal}>{k100} kcal</Text>
-            <Text style={styles.previewMacros}>
-              P {p100} g · C {c100} g · G {g100} g
-            </Text>
+            <Text style={styles.previewMacros}>{macroSummary(t, p100, c100, g100)}</Text>
           </View>
         )}
 
@@ -192,7 +194,7 @@ export function CreateFoodForm({ food, initialName = '', onSave, onCancel }: Pro
           disabled={!puedeGuardar}
           style={[styles.save, !puedeGuardar && { opacity: 0.4 }]}
         >
-          <Text style={styles.saveLabel}>{editing ? 'Guardar cambios' : 'Guardar alimento'}</Text>
+          <Text style={styles.saveLabel}>{editing ? t('createFoodForm.saveEdit') : t('createFoodForm.saveNew')}</Text>
         </Pressable>
       </ScrollView>
     </View>

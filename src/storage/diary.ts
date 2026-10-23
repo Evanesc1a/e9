@@ -1,12 +1,29 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import type { DayLog } from '../types';
+import type { DayLog, MealType } from '../types';
 
 const keyFor = (fecha: string) => `diary:${fecha}`;
+
+// Comidas guardadas antes de que "tipo" pasara a ser una clave estable
+// (en español, tal como mostraba la interfaz en ese momento)
+const TIPOS_LEGADO: Record<string, MealType> = {
+  Desayuno: 'breakfast',
+  Comida: 'lunch',
+  Merienda: 'afternoonSnack',
+  Cena: 'dinner',
+  Snack: 'snack',
+};
+
+function migrarTipo(tipo: string): MealType {
+  return (TIPOS_LEGADO[tipo] ?? tipo) as MealType;
+}
 
 export async function loadDay(fecha: string): Promise<DayLog> {
   try {
     const raw = await AsyncStorage.getItem(keyFor(fecha));
-    if (raw) return JSON.parse(raw) as DayLog;
+    if (raw) {
+      const day = JSON.parse(raw) as DayLog;
+      return { ...day, comidas: day.comidas.map((m) => ({ ...m, tipo: migrarTipo(m.tipo) })) };
+    }
   } catch (e) {
     console.warn('No se pudo leer el día', e);
   }

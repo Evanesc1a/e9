@@ -3,6 +3,7 @@ import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Image } from 'expo-image';
 import { router, useFocusEffect, type Href } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import { DateSelector } from '../../components/DateSelector';
 import { CaloriesCard } from '../../components/CaloriesCard';
 import { MacrosSection } from '../../components/MacrosSection';
@@ -16,6 +17,7 @@ import type { DayLog } from '../../types';
 import { Background } from '../../components/Background';
 
 export default function Diario() {
+  const { t } = useTranslation();
   const { settings } = useSettings();
   const { goals } = settings;
   // Hasta que escribas tu nombre, el avatar muestra la "A" del diseño
@@ -80,8 +82,8 @@ export default function Diario() {
 
           {/* Bienvenida */}
           <View style={styles.welcome}>
-            <Text style={styles.title}>Tu pequeño ritual.</Text>
-            <Text style={styles.subtitle}>Un espacio para cuidarte, a tu ritmo.</Text>
+            <Text style={styles.title}>{t('diario.title')}</Text>
+            <Text style={styles.subtitle}>{t('diario.subtitle')}</Text>
           </View>
 
           {/* Selector de fecha */}

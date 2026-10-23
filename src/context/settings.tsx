@@ -8,6 +8,7 @@ import {
   type ReactNode,
 } from 'react';
 import { DEFAULT_SETTINGS, loadSettings, saveSettings } from '../storage/settings';
+import i18n from '../i18n';
 import type { Settings } from '../types';
 
 type SettingsContextValue = {
@@ -30,6 +31,7 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
     loadSettings().then((s) => {
       setSettings(s);
       setLoaded(true);
+      i18n.changeLanguage(s.idioma);
     });
   }, []);
 
@@ -38,6 +40,7 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
       const next = { ...settings, ...patch };
       setSettings(next);
       await saveSettings(next);
+      if (patch.idioma) i18n.changeLanguage(patch.idioma);
     },
     [settings]
   );

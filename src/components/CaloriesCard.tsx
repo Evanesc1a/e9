@@ -1,5 +1,6 @@
 import { View, Text, Pressable, StyleSheet } from 'react-native';
 import { Sparkles, Pencil } from 'lucide-react-native';
+import { useTranslation } from 'react-i18next';
 import { CalorieRing } from './CalorieRing';
 import { colors, fonts, radii } from '../theme/tokens';
 import { formatNumber } from '../utils/format';
@@ -11,12 +12,13 @@ type Props = {
 };
 
 export function CaloriesCard({ consumed, goal, onEditGoals }: Props) {
+  const { t } = useTranslation();
   const remaining = Math.max(goal - consumed, 0);
 
   return (
     <View style={styles.card}>
       <View style={styles.header}>
-        <Text style={styles.title}>La energía de tu día</Text>
+        <Text style={styles.title}>{t('caloriesCard.title')}</Text>
         <Sparkles size={18} color={colors.wine} />
       </View>
 
@@ -26,22 +28,22 @@ export function CaloriesCard({ consumed, goal, onEditGoals }: Props) {
         <View style={styles.balance}>
           <View style={{ gap: 2 }}>
             <Text style={styles.remaining}>{formatNumber(remaining)}</Text>
-            <Text style={styles.muted12}>kcal por registrar</Text>
+            <Text style={styles.muted12}>{t('caloriesCard.remainingUnit')}</Text>
           </View>
 
           <View style={styles.separator} />
 
           <View style={styles.goalRow}>
             <Text style={styles.goal}>{formatNumber(goal)}</Text>
-            <Text style={styles.muted10}>kcal de meta</Text>
+            <Text style={styles.muted10}>{t('caloriesCard.goalUnit')}</Text>
           </View>
         </View>
       </View>
 
       <View style={styles.footer}>
-                <Text style={styles.muted10}>Tus objetivos del día</Text>
+                <Text style={styles.muted10}>{t('caloriesCard.footerLabel')}</Text>
         <Pressable onPress={onEditGoals} style={styles.edit} hitSlop={8}>
-          <Text style={styles.editLabel}>Editar</Text>
+          <Text style={styles.editLabel}>{t('common.edit')}</Text>
           <Pencil size={12} color={colors.wine} />
         </Pressable>
       </View>

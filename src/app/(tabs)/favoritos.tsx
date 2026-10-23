@@ -3,13 +3,16 @@ import { View, Text, Pressable, FlatList, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useFocusEffect } from 'expo-router';
 import { Star } from 'lucide-react-native';
+import { useTranslation } from 'react-i18next';
 import { Background } from '../../components/Background';
 import { loadAllFoods } from '../../storage/foods';
 import { loadFavorites, toggleFavorite } from '../../storage/favorites';
 import { colors, fonts, radii } from '../../theme/tokens';
+import { foodDisplayName, macroSummary } from '../../utils/nutrition';
 import type { Food } from '../../types';
 
 export default function Favoritos() {
+  const { t, i18n } = useTranslation();
   const [foods, setFoods] = useState<Food[]>([]);
   const [favs, setFavs] = useState<string[]>([]);
 
@@ -39,11 +42,11 @@ export default function Favoritos() {
 
       <SafeAreaView style={styles.safe} edges={['top']}>
         <View style={styles.header}>
-          <Text style={styles.title}>Favoritos</Text>
+          <Text style={styles.title}>{t('favoritos.title')}</Text>
           <Text style={styles.subtitle}>
             {lista.length === 0
-              ? 'Tus alimentos de siempre, a un toque.'
-              : `${lista.length} ${lista.length === 1 ? 'alimento' : 'alimentos'} guardados`}
+              ? t('favoritos.subtitleEmpty')
+              : t('favoritos.subtitleCount', { count: lista.length })}
           </Text>
         </View>
 
@@ -55,23 +58,20 @@ export default function Favoritos() {
           ListEmptyComponent={
             <View style={styles.empty}>
               <Star size={28} color={colors.rose} />
-              <Text style={styles.emptyTitle}>Aún no tienes favoritos</Text>
-              <Text style={styles.emptyBody}>
-                Toca la estrella de un alimento cuando añadas un ingrediente a una comida y
-                aparecerá aquí.
-              </Text>
+              <Text style={styles.emptyTitle}>{t('favoritos.emptyTitle')}</Text>
+              <Text style={styles.emptyBody}>{t('favoritos.emptyBody')}</Text>
             </View>
           }
           renderItem={({ item }) => (
             <View style={styles.row}>
               <View style={{ flex: 1, gap: 4 }}>
-                <Text style={styles.name}>{item.nombre}</Text>
+                <Text style={styles.name}>{foodDisplayName(item, i18n.language)}</Text>
                 <Text style={styles.meta}>
                   {item.marca ? `${item.marca} · ` : ''}
-                  {item.kcal100} kcal por 100 {item.unidad ?? 'g'}
+                  {t('ingredientPicker.perHundred', { kcal: item.kcal100, unit: item.unidad ?? 'g' })}
                 </Text>
                 <Text style={styles.meta}>
-                  P {item.proteinas100} g · C {item.carbohidratos100} g · G {item.grasas100} g
+                  {macroSummary(t, item.proteinas100, item.carbohidratos100, item.grasas100)}
                 </Text>
               </View>
               <Pressable onPress={() => quitar(item.id)} hitSlop={12}>
